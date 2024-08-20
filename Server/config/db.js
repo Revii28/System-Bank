@@ -1,19 +1,26 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+require('dotenv').config();
 
-dotenv.config();
+const { MongoClient } = require('mongodb');
 
-const connectDB = async () => {
-    try {
-        await mongoose.connect(process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log('MongoDB Connected');
-    } catch (err) {
-        console.error(err.message);
-        process.exit(1);
-    }
-};
+const uri = process.env.MONGO_URI;
 
-module.exports = connectDB;
+if (!uri) {
+  throw new Error('MONGO_URI is not defined in the environment variables')
+}
+
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+let db = null;
+
+async function connectDB() {
+  if (!db) {
+    await client.connect();
+    db = client.db('System-Bank');
+  }
+  return db;
+}
+
+module.exports = { connectDB };

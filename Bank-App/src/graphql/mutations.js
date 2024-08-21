@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client';
 
-
 export const CREATE_USER = gql`
   mutation CreateUser($username: String!, $password: String!, $role: String) {
     createUser(username: $username, password: $password, role: $role) {
@@ -27,7 +26,6 @@ export const DELETE_USER = gql`
   }
 `;
 
-
 export const CREATE_CUSTOMER = gql`
   mutation CreateCustomer($name: String!) {
     createCustomer(name: $name) {
@@ -51,7 +49,6 @@ export const DELETE_CUSTOMER = gql`
     deleteCustomer(id: $id)
   }
 `;
-
 
 export const CREATE_ACCOUNT = gql`
   mutation CreateAccount($packet: String!, $customerId: String!, $balance: Float!, $depositoTypeId: String!) {
@@ -93,7 +90,6 @@ export const DELETE_ACCOUNT = gql`
   }
 `;
 
-
 export const CREATE_DEPOSITO_TYPE = gql`
   mutation CreateDepositoType($name: String!, $yearlyReturn: Float!) {
     createDepositoType(name: $name, yearlyReturn: $yearlyReturn) {
@@ -120,7 +116,6 @@ export const DELETE_DEPOSITO_TYPE = gql`
   }
 `;
 
-
 export const DEPOSIT_TO_ACCOUNT = gql`
   mutation DepositToAccount($accountId: String!, $amount: Float!) {
     depositToAccount(accountId: $accountId, amount: $amount) {
@@ -139,25 +134,25 @@ export const WITHDRAW_FROM_ACCOUNT = gql`
   }
 `;
 
-
 export const LOGIN = gql`
-mutation Mutation($password: String!, $username: String!) {
-  login(password: $password, username: $username) {
-    token
-    user {
-      role
+  mutation Login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      token
+      user {
+        role
+      }
     }
   }
-}
 `;
 
 export const REGISTER = gql`
-mutation Register($username: String!, $password: String!) {
-  register(username: $username, password: $password) {
-    user {
-      username
-      password
+  mutation Register($username: String!, $password: String!) {
+    register(username: $username, password: $password) {
+      token
+      user {
+        username
+        role
+      }
     }
   }
-}
 `;

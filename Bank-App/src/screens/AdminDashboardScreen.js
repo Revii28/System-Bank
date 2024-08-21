@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Button, ActivityIndicator } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
 
@@ -35,6 +35,18 @@ const AdminDashboardScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Admin Dashboard</Text>
+      <Button
+        title="Manage Customers"
+        onPress={() => navigation.navigate('ManageCustomer')}
+      />
+      <Button
+        title="Manage Accounts"
+        onPress={() => navigation.navigate('ManageAccount')}
+      />
+      <Button
+        title="Manage Deposito Types"
+        onPress={() => navigation.navigate('ManageDepositoType')}
+      />
     </View>
   );
 };

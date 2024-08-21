@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client';
 
-
 export const GET_USERS = gql`
   query GetUsers {
     users {
@@ -10,7 +9,6 @@ export const GET_USERS = gql`
     }
   }
 `;
-
 
 export const GET_CUSTOMER = gql`
   query GetCustomer($id: String!) {
@@ -30,7 +28,6 @@ export const GET_CUSTOMERS = gql`
   }
 `;
 
-
 export const GET_ACCOUNT = gql`
   query GetAccount($id: String!) {
     account(id: $id) {
@@ -46,7 +43,7 @@ export const GET_ACCOUNT = gql`
         name
         yearlyReturn
       }
-      balanceWithInterest(months: 12) 
+      balanceWithInterest(months: 12)
     }
   }
 `;
@@ -70,7 +67,6 @@ export const GET_ACCOUNTS = gql`
     }
   }
 `;
-
 
 export const GET_DEPOSITO_TYPE = gql`
   query GetDepositoType($id: String!) {

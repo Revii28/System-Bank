@@ -1,13 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_DEPOSITO_TYPES, DELETE_DEPOSITO_TYPE } from '../graphql/queries';
+import { GET_DEPOSITO_TYPES } from '../graphql/queries';
+import { DELETE_DEPOSITO_TYPE } from '../graphql/mutations';
 import { useNavigation } from '@react-navigation/native';
 
 const ManageDepositoTypeScreen = () => {
   const [depositoTypes, setDepositoTypes] = useState([]);
   const { data, refetch } = useQuery(GET_DEPOSITO_TYPES);
-  const [deleteDepositoType] = useMutation(DELETE_DEPOSITO_TYPE);
+  const [deleteDepositoType] = useMutation(DELETE_DEPOSITO_TYPE, {
+    onCompleted: (response) => {
+      if (response.deleteDepositoType) {
+        Alert.alert('Success', 'Deposito type deleted successfully');
+        refetch();
+      } else {
+        Alert.alert('Error', 'Failed to delete deposito type');
+      }
+    },
+    onError: () => {
+      Alert.alert('Error', 'An unexpected error occurred');
+    }
+  });
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -29,16 +43,28 @@ const ManageDepositoTypeScreen = () => {
           text: 'OK',
           onPress: async () => {
             try {
-              await deleteDepositoType({ variables: { id } });
-              await refetch();
-              Alert.alert('Success', 'Deposito type deleted successfully');
+              const { data } = await deleteDepositoType({ variables: { deleteDepositoTypeId: id } });
+              if (data.deleteDepositoType) {
+                Alert.alert('Success', 'Deposito type deleted successfully');
+                refetch();
+              } else {
+                Alert.alert('Error', 'Failed to delete deposito type');
+              }
             } catch (error) {
-              Alert.alert('Error', 'Failed to delete deposito type');
+              Alert.alert('Error', 'An unexpected error occurred');
             }
           },
         },
       ]
     );
+  };
+
+  const handleAddPress = () => {
+    navigation.navigate('AddDepositoType', { refetch });
+  };
+
+  const handleEditPress = (id) => {
+    navigation.navigate('EditDepositoType', { id, refetch });
   };
 
   const renderItem = ({ item }) => (
@@ -47,7 +73,7 @@ const ManageDepositoTypeScreen = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('EditDepositoType', { depositoTypeId: item._id })}
+          onPress={() => handleEditPress(item._id)}
         >
           <Text style={styles.buttonText}>Edit</Text>
         </TouchableOpacity>
@@ -66,7 +92,7 @@ const ManageDepositoTypeScreen = () => {
       <Text style={styles.title}>Manage Deposito Types</Text>
       <Button
         title="Add Deposito Type"
-        onPress={() => navigation.navigate('AddDepositoType')}
+        onPress={handleAddPress}
       />
       <FlatList
         data={depositoTypes}

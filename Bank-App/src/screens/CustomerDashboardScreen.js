@@ -1,21 +1,34 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import LogoutButton from '../components/LogoutButton'; // Pastikan path ini benar
+import LogoutButton from '../components/LogoutButton';
 
-const CustomerDashboardScreen = () => {
+const CustomerDashboardScreen = ({ route }) => {
   const navigation = useNavigation();
+  const { accountId } = route.params || {};
 
   const handleViewAccountDetails = () => {
-    navigation.navigate('AccountDetails'); 
+    if (accountId) {
+      navigation.navigate('AccountDetailsUser', { accountId });
+    } else {
+      Alert.alert('Error', 'No accountId provided. Please select an account first.');
+    }
   };
 
   const handleDeposit = () => {
-    navigation.navigate('Deposit'); 
+    navigation.navigate('Deposit', { accountId });
   };
 
   const handleWithdraw = () => {
-    navigation.navigate('Withdraw'); 
+    navigation.navigate('Withdraw', { accountId });
+  };
+
+  const handleCreateAccount = () => {
+    navigation.navigate('CreateAccountUser');
+  };
+
+  const handleAddCustomer = () => {
+    navigation.navigate('AddCustomer');
   };
 
   return (
@@ -25,8 +38,10 @@ const CustomerDashboardScreen = () => {
         <Button title="View Account Details" onPress={handleViewAccountDetails} />
         <Button title="Deposit" onPress={handleDeposit} />
         <Button title="Withdraw" onPress={handleWithdraw} />
+        <Button title="Create Account" onPress={handleCreateAccount} />
+        <Button title="Create Customer Account" onPress={handleAddCustomer} />
       </View>
-      <LogoutButton /> 
+      <LogoutButton />
     </View>
   );
 };

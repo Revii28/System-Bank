@@ -14,6 +14,11 @@ import EditAccountScreen from '../screens/EditAccountScreen';
 import ManageDepositoTypeScreen from '../screens/ManageDepositoTypeScreen';
 import AddDepositoTypeScreen from '../screens/AddDepositoTypeScreen';
 import EditDepositoTypeScreen from '../screens/EditDepositoTypeScreen';
+import AccountDetailsScreen from '../screens/AccountDetailsScreen';
+import AccountDetailsUserScreen from '../screens/AccountDetailsUserScreen';
+import CreateAccountUser from '../screens/CreateAccountUserScreen'; 
+import DepositScreen from '../screens/DepositScreen';
+import WithdrawScreen from '../screens/WithdrawScreen';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +39,11 @@ const MainStack = () => {
       <Stack.Screen name="ManageDepositoType" component={ManageDepositoTypeScreen} />
       <Stack.Screen name="AddDepositoType" component={AddDepositoTypeScreen} />
       <Stack.Screen name="EditDepositoType" component={EditDepositoTypeScreen} />
+      <Stack.Screen name="AccountDetails" component={AccountDetailsScreen} />
+      <Stack.Screen name="AccountDetailsUser" component={AccountDetailsUserScreen} />
+      <Stack.Screen name="CreateAccountUser" component={CreateAccountUser} /> 
+      <Stack.Screen name="Deposit" component={DepositScreen} />
+      <Stack.Screen name="Withdraw" component={WithdrawScreen} />
     </Stack.Navigator>
   );
 };

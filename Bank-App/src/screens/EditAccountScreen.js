@@ -7,7 +7,7 @@ import { GET_CUSTOMERS } from '../graphql/queries';
 import { GET_DEPOSITO_TYPES } from '../graphql/queries';
 
 const EditAccountScreen = ({ route, navigation }) => {
-  const { accountId } = route.params; // Assume accountId is passed as a route param
+  const { accountId } = route.params; 
   const [packet, setPacket] = useState('');
   const [customerId, setCustomerId] = useState('');
   const [balance, setBalance] = useState('');
@@ -49,7 +49,7 @@ const EditAccountScreen = ({ route, navigation }) => {
           depositoTypeId,
         },
       });
-      navigation.goBack(); // Navigate back after successful update
+      navigation.goBack(); 
     } catch (e) {
       console.error('Failed to update account', e);
     }

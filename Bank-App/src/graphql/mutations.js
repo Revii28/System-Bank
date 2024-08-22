@@ -51,22 +51,23 @@ export const DELETE_CUSTOMER = gql`
 `;
 
 export const CREATE_ACCOUNT = gql`
-  mutation CreateAccount($packet: String!, $customerId: String!, $balance: Float!, $depositoTypeId: String!) {
-    createAccount(packet: $packet, customerId: $customerId, balance: $balance, depositoTypeId: $depositoTypeId) {
+mutation Mutation($packet: String!, $customerId: ID!, $balance: Float!, $depositoTypeId: ID!) {
+  createAccount(packet: $packet, customerId: $customerId, balance: $balance, depositoTypeId: $depositoTypeId) {
+    _id
+    packet
+    customer {
       _id
-      packet
-      customer {
-        _id
-        name
-      }
-      balance
-      depositoType {
-        _id
-        name
-        yearlyReturn
-      }
+      name
     }
+    balance
+    depositoType {
+      _id
+      name
+      yearlyReturn
+    }
+    balanceWithInterest
   }
+}
 `;
 
 export const UPDATE_ACCOUNT = gql`
@@ -91,29 +92,29 @@ export const DELETE_ACCOUNT = gql`
 `;
 
 export const CREATE_DEPOSITO_TYPE = gql`
-  mutation CreateDepositoType($name: String!, $yearlyReturn: Float!) {
-    createDepositoType(name: $name, yearlyReturn: $yearlyReturn) {
-      _id
-      name
-      yearlyReturn
-    }
+mutation CreateDepositoType($name: String!, $yearlyReturn: Float!) {
+  createDepositoType(name: $name, yearlyReturn: $yearlyReturn) {
+    _id
+    name
+    yearlyReturn
   }
+}
 `;
 
 export const UPDATE_DEPOSITO_TYPE = gql`
-  mutation UpdateDepositoType($id: String!, $name: String, $yearlyReturn: Float) {
-    updateDepositoType(id: $id, name: $name, yearlyReturn: $yearlyReturn) {
-      _id
-      name
-      yearlyReturn
-    }
+mutation UpdateDepositoType($updateDepositoTypeId: ID!, $name: String, $yearlyReturn: Float) {
+  updateDepositoType(id: $updateDepositoTypeId, name: $name, yearlyReturn: $yearlyReturn) {
+    _id
+    name
+    yearlyReturn
   }
+}
 `;
 
 export const DELETE_DEPOSITO_TYPE = gql`
-  mutation DeleteDepositoType($id: String!) {
-    deleteDepositoType(id: $id)
-  }
+mutation DeleteDepositoType($deleteDepositoTypeId: ID!) {
+  deleteDepositoType(id: $deleteDepositoTypeId)
+}
 `;
 
 export const DEPOSIT_TO_ACCOUNT = gql`
@@ -135,14 +136,16 @@ export const WITHDRAW_FROM_ACCOUNT = gql`
 `;
 
 export const LOGIN = gql`
-  mutation Login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      token
-      user {
-        role
-      }
+mutation Login($username: String!, $password: String!) {
+  login(username: $username, password: $password) {
+    user {
+      _id
+      username
+      role
     }
+    token
   }
+}
 `;
 
 export const REGISTER = gql`

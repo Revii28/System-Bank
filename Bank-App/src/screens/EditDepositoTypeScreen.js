@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_DEPOSITO_TYPE } from '../graphql/queries';
 import { UPDATE_DEPOSITO_TYPE } from '../graphql/mutations';
 
 const EditDepositoTypeScreen = ({ route, navigation }) => {
-  const { id } = route.params; 
+  const { id, refetch } = route.params;
   const [name, setName] = useState('');
   const [yearlyReturn, setYearlyReturn] = useState('');
-  const [updateDepositoType, { loading: updating, error: updateError }] = useMutation(UPDATE_DEPOSITO_TYPE);
+  const [updateDepositoType, { loading: updating, error: updateError }] = useMutation(UPDATE_DEPOSITO_TYPE, {
+    onCompleted: (data) => {
+      if (data.updateDepositoType === null) {
+        Alert.alert('Success', 'Deposito Type updated successfully');
+        refetch();
+        navigation.goBack();
+      }
+    },
+    onError: (error) => {
+      Alert.alert('Error', 'Failed to update deposito type');
+      console.error('Update Error:', error);
+    }
+  });
   const { data, loading: fetching, error: fetchError } = useQuery(GET_DEPOSITO_TYPE, {
     variables: { id },
     skip: !id,
@@ -25,12 +37,11 @@ const EditDepositoTypeScreen = ({ route, navigation }) => {
     try {
       await updateDepositoType({
         variables: {
-          id,
+          updateDepositoTypeId: id,
           name,
           yearlyReturn: parseFloat(yearlyReturn),
         },
       });
-      navigation.goBack(); 
     } catch (e) {
       console.error('Failed to update deposito type', e);
     }

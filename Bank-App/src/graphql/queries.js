@@ -10,11 +10,12 @@ export const GET_USERS = gql`
   }
 `;
 
-export const GET_CUSTOMER = gql`
-  query GetCustomer($id: String!) {
-    customer(id: $id) {
+export const GET_USER = gql`
+  query GetUser($id: ID!) {
+    user(id: $id) {
       _id
-      name
+      username
+      role
     }
   }
 `;
@@ -28,22 +29,11 @@ export const GET_CUSTOMERS = gql`
   }
 `;
 
-export const GET_ACCOUNT = gql`
-  query GetAccount($id: String!) {
-    account(id: $id) {
+export const GET_CUSTOMER = gql`
+  query GetCustomer($id: ID!) {
+    customer(id: $id) {
       _id
-      packet
-      customer {
-        _id
-        name
-      }
-      balance
-      depositoType {
-        _id
-        name
-        yearlyReturn
-      }
-      balanceWithInterest(months: 12)
+      name
     }
   }
 `;
@@ -53,6 +43,26 @@ export const GET_ACCOUNTS = gql`
     accounts {
       _id
       packet
+      customer {
+        _id
+        name
+      }
+      balance
+      depositoType {
+        _id
+        name
+        yearlyReturn
+      }
+      balanceWithInterest
+    }
+  }
+`;
+
+export const GET_ACCOUNT = gql`
+  query GetAccount($id: ID!) {
+    account(id: $id) {
+      _id
+      packet
       balance
       customer {
         _id
@@ -63,13 +73,23 @@ export const GET_ACCOUNTS = gql`
         name
         yearlyReturn
       }
-      balanceWithInterest(months: 12)
+      balanceWithInterest
     }
   }
 `;
 
+export const GET_DEPOSITO_TYPES = gql`
+query DepositoTypes {
+  depositoTypes {
+    _id
+    name
+    yearlyReturn
+  }
+}
+`;
+
 export const GET_DEPOSITO_TYPE = gql`
-  query GetDepositoType($id: String!) {
+  query GetDepositoType($id: ID!) {
     depositoType(id: $id) {
       _id
       name
@@ -78,12 +98,22 @@ export const GET_DEPOSITO_TYPE = gql`
   }
 `;
 
-export const GET_DEPOSITO_TYPES = gql`
-  query GetDepositoTypes {
-    depositoTypes {
+export const GET_ACCOUNT_DETAILS = gql`
+query GetAccountDetails($accountId: ID!) {
+  getAccountDetails(accountId: $accountId) {
+    _id
+    packet
+    customer {
+      _id
+      name
+    }
+    balance
+    depositoType {
       _id
       name
       yearlyReturn
     }
+    balanceWithInterest
   }
-`;
+}
+`

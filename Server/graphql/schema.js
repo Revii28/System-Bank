@@ -2,19 +2,18 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
     type User {
-        _id: String!
+        _id: ID!
         username: String!
-        password: String!
         role: String
     }
 
     type Customer {
-        _id: String!
+        _id: ID!
         name: String!
     }
 
     type Account {
-        _id: String!
+        _id: ID!
         packet: String!
         customer: Customer!
         balance: Float!
@@ -23,40 +22,60 @@ const typeDefs = gql`
     }
 
     type DepositoType {
-        _id: String!
+        _id: ID!
         name: String!
         yearlyReturn: Float!
     }
 
+    type AuthPayload {
+        token: String!
+        user: User
+    }
+
+    type Register {
+        message: String!
+    }
+
     type Query {
         users: [User]
-        customer(id: String!): Customer
+        user(id: ID!): User
+        customer(id: ID!): Customer
         customers: [Customer]
-        account(id: String!): Account
+        account(id: ID!): Account
         accounts: [Account]
-        depositoType(id: String!): DepositoType
+        depositoType(id: ID!): DepositoType
         depositoTypes: [DepositoType]
+
+ 
+        getAccountDetails(accountId: ID!): Account
     }
 
     type Mutation {
         createUser(username: String!, password: String!, role: String): User
-        updateUser(id: String!, username: String, password: String, role: String): User
-        deleteUser(id: String!): Boolean
+        updateUser(id: ID!, username: String, password: String, role: String): User
+        deleteUser(id: ID!): Boolean
 
         createCustomer(name: String!): Customer
-        updateCustomer(id: String!, name: String!): Customer
-        deleteCustomer(id: String!): Boolean
+        updateCustomer(id: ID!, name: String!): Customer
+        deleteCustomer(id: ID!): Boolean
 
-        createAccount(packet: String!, customerId: String!, balance: Float!, depositoTypeId: String!): Account
-        updateAccount(id: String!, packet: String, balance: Float, depositoTypeId: ID): Account
-        deleteAccount(id: String!): Boolean
+        createAccount(packet: String!, customerId: ID!, balance: Float!, depositoTypeId: ID!): Account
+        updateAccount(id: ID!, packet: String, balance: Float, depositoTypeId: ID): Account
+        deleteAccount(id: ID!): Boolean
 
         createDepositoType(name: String!, yearlyReturn: Float!): DepositoType
-        updateDepositoType(id: String!, name: String, yearlyReturn: Float): DepositoType
-        deleteDepositoType(id: String!): Boolean
+        updateDepositoType(id: ID!, name: String, yearlyReturn: Float): DepositoType
+        deleteDepositoType(id: ID!): Boolean
 
-        depositToAccount(accountId: String!, amount: Float!): Account
-        withdrawFromAccount(accountId: String!, amount: Float!): Account
+        depositToAccount(accountId: ID!, amount: Float!): Account
+        withdrawFromAccount(accountId: ID!, amount: Float!): Account
+
+
+        depositAmount(accountId: ID!, amount: Float!): Account
+        withdrawAmount(accountId: ID!, amount: Float!): Account
+
+        login(username: String!, password: String!): AuthPayload
+        register(username: String!, password: String!, role: String): Register
     }
 `;
 

@@ -14,12 +14,12 @@ const verifyToken = (token) => {
 };
 
 const hashPassword = async (password) => {
-    const salt = bcrypt.genSaltSync(10);
+    const salt = await bcrypt.genSalt(10);
     return bcrypt.hash(password, salt);
 };
 
-const checkPassword = (password, hashedPassword) => {
+const comparePassword = (password, hashedPassword) => {
     return bcrypt.compare(password, hashedPassword);
 };
 
-module.exports = { generateToken, verifyToken, hashPassword, checkPassword };
+module.exports = { generateToken, verifyToken, hashPassword, comparePassword };

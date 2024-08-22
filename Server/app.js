@@ -31,10 +31,10 @@ const server = new ApolloServer({
 async function startServer() {
   try {
     await server.start();
-    server.applyMiddleware({ app });
+    server.applyMiddleware({ app, path: '/' });
 
     app.listen({ port }, () =>
-      console.log(`Server ready at http://localhost:${port}${server.graphqlPath}`)
+      console.log(`Server ready at http://localhost:${port}/`)
     );
   } catch (error) {
     console.error('Error starting server:', error);

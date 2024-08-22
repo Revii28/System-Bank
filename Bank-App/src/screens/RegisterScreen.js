@@ -5,17 +5,16 @@ import { useNavigation } from '@react-navigation/native';
 import { REGISTER } from '../graphql/mutations';
 
 const RegisterScreen = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [register] = useMutation(REGISTER);
   const navigation = useNavigation();
 
   const handleRegister = async () => {
     try {
-      const { data } = await register({ variables: { email, password } });
-      if (data && data.register) {
-        await SecureStore.setItemAsync('userToken', data.register.token);
-        await SecureStore.setItemAsync('userRole', data.register.role);
+      const { data } = await register({ variables: { username, password } });
+      if (data && data.register.message === "success") {
+        Alert.alert('Registration Successful', 'Pendaftaran berhasil. Silakan login.');
         navigation.navigate('Login'); 
       }
     } catch (error) {
@@ -28,10 +27,10 @@ const RegisterScreen = () => {
       <Text style={styles.title}>Register</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}

@@ -149,13 +149,9 @@ mutation Login($username: String!, $password: String!) {
 `;
 
 export const REGISTER = gql`
-  mutation Register($username: String!, $password: String!) {
-    register(username: $username, password: $password) {
-      token
-      user {
-        username
-        role
-      }
-    }
+mutation Register($username: String!, $password: String!) {
+  register(username: $username, password: $password) {
+    message
   }
+}
 `;
